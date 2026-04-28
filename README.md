@@ -239,7 +239,7 @@ Password: admin123
 
 ## 📸 Screenshots
 <img width="1919" height="990" alt="image" src="https://github.com/user-attachments/assets/208518b4-ba87-45a0-9375-cd79b0bfd858" />
-
+---
 <img width="1919" height="986" alt="image" src="https://github.com/user-attachments/assets/b427e7a6-c9de-4e63-9739-707f268ab773" />
 
 
