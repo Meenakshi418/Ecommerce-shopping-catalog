@@ -152,53 +152,6 @@ bazaarx/
 
 ---
 
-## ⚙️ Setup Instructions
-
-### 1. Clone Repository
-
-```
-git clone https://github.com/YOUR_USERNAME/bazaarx.git
-cd bazaarx
-```
-
-### 2. Install Dependencies
-
-```
-npm install
-```
-
-### 3. Setup MySQL Database
-
-Create database:
-
-```
-CREATE DATABASE bazaarx;
-```
-
-Create tables:
-
-* users
-* products
-* cart
-* orders
-
-(Use your SQL schema here)
-
----
-
-### 4. Run Server
-
-```
-node server.js
-```
-
-Server runs on:
-
-```
-http://localhost:3000
-```
-
----
 
 ## 🔑 Admin Credentials
 
