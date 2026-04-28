@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BazaarX — Modern Shopping</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="style.css" rel="stylesheet">
+</head>
+<body>
+ 
+<!-- NAV -->
+<nav>
+  <div class="logo">Bazaar<span>X</span></div>
+  <div class="nav-links">
+    <button class="nav-btn active" onclick="showPage('home')">Shop</button>
+    <button class="nav-btn" onclick="showPage('catalog')">Catalog</button>
+    <button class="nav-btn" id="adminNavBtn" onclick="showPage('admin')" style="display:none">Admin</button>
+  </div>
+  <div class="nav-right">
+    <button class="cart-btn" onclick="showPage('cart')">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
+    <div class="user-pill" id="userPill" onclick="showPage('auth')">Sign In</div>
+  </div>
+</nav>
+ 
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+ 
+<!-- HOME PAGE -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="hero-content">
+      <h1>Shop the <em>Future</em><br>of Commerce</h1>
+      <p>30 curated products across 6 categories. Lightning fast. Beautifully designed.</p>
+      <div class="hero-btns">
+        <button class="btn-primary" onclick="showPage('catalog')">Browse Products →</button>
+        <button class="btn-secondary" onclick="showPage('auth')">Create Account</button>
+      </div>
+    </div>
+  </div>
+ 
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Trending <span>Now</span></div>
+    </div>
+    <div class="products-grid" id="trendingGrid"></div>
+  </div>
+</div>
+ 
+<!-- CATALOG PAGE -->
+<div class="page" id="page-catalog">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">All <span>Products</span></div>
+      <span style="color:var(--muted);font-size:0.9rem" id="productCount"></span>
+    </div>
+    <div class="search-bar">
+      <input class="search-input" id="searchInput" placeholder="Search products..." oninput="filterProducts()">
+      <select class="sort-select" id="sortSelect" onchange="filterProducts()">
+        <option value="default">Sort: Default</option>
+        <option value="price-asc">Price: Low to High</option>
+        <option value="price-desc">Price: High to Low</option>
+        <option value="name">Name A-Z</option>
+      </select>
+    </div>
+    <div class="cat-grid" id="catFilter"></div>
+    <br>
+    <div class="products-grid" id="catalogGrid"></div>
+  </div>
+</div>
+ 
+<!-- CART PAGE -->
+<div class="page" id="page-cart">
+  <div class="cart-layout">
+    <div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;margin-bottom:1.5rem">Your <span style="color:var(--accent)">Cart</span></h2>
+      <div id="cartItems"></div>
+    </div>
+    <div class="order-summary">
+      <h3 style="font-weight:700;margin-bottom:1.2rem">Order Summary</h3>
+      <div class="summary-row"><span>Subtotal</span><span id="subtotal">₹0</span></div>
+      <div class="summary-row"><span>Delivery</span><span style="color:var(--success)">FREE</span></div>
+      <div class="summary-row"><span>Tax (18% GST)</span><span id="tax">₹0</span></div>
+      <div class="summary-row total"><span>Total</span><span id="total">₹0</span></div>
+      <button class="checkout-btn" onclick="checkout()">Proceed to Checkout →</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- AUTH PAGE -->
+<div class="page" id="page-auth">
+  <div class="auth-wrapper">
+    <div class="auth-card">
+      <div class="auth-title">Welcome Back</div>
+      <div class="auth-sub">Sign in to your account or create a new one</div>
+      <div class="auth-tabs">
+        <button class="auth-tab active" onclick="switchAuth('login')">Sign In</button>
+        <button class="auth-tab" onclick="switchAuth('register')">Register</button>
+      </div>
+      <div class="auth-form" id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" id="loginEmail" placeholder="you@example.com" type="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="loginPass" placeholder="••••••••" type="password">
+        </div>
+        <button class="btn-primary" onclick="login()">Sign In →</button>
+        <p style="color:var(--muted);font-size:0.8rem;text-align:center">
+          Admin: admin@bazaarx.com / admin123
+        </p>
+      </div>
+      <div class="auth-form" id="registerForm" style="display:none">
+        <div class="form-group">
+          <label class="form-label">Full Name</label>
+          <input class="form-input" id="regName" placeholder="Your name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input class="form-input" id="regEmail" placeholder="you@example.com" type="email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <input class="form-input" id="regPass" placeholder="••••••••" type="password">
+        </div>
+        <button class="btn-primary" onclick="register()">Create Account →</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<!-- ADMIN PAGE -->
+<div class="page" id="page-admin">
+  <div class="section">
+    <div class="section-header">
+      <div class="section-title">Admin <span>Dashboard</span></div>
+    </div>
+    <div class="admin-grid">
+      <div class="stat-card"><div class="stat-label">Total Products</div><div class="stat-val orange" id="statProducts">30</div></div>
+      <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-val yellow" id="statUsers">0</div></div>
+      <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-val green" id="statOrders">0</div></div>
+      <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-val orange" id="statRevenue">₹0</div></div>
+    </div>
+ 
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden">
+      <div style="padding:1rem 1.5rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+        <h3 style="font-weight:700">Product Management</h3>
+        <button class="btn-primary" onclick="document.getElementById('addProductForm').scrollIntoView({behavior:'smooth'})" style="font-size:0.85rem;padding:0.5rem 1rem">+ Add Product</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="admin-table" id="adminTable">
+          <thead><tr><th>ID</th><th>Name</th><th>Category</th><th>Price</th><th>Stock</th><th>Status</th><th>Actions</th></tr></thead>
+          <tbody id="adminTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+ 
+    <div class="admin-form" id="addProductForm">
+      <h3 style="font-weight:700;margin-bottom:1.2rem">Add New Product</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Product Name</label>
+          <input class="form-input" id="newName" placeholder="Product name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-select" id="newCat">
+            <option>Electronics</option><option>Clothing</option><option>Books</option>
+            <option>Home & Kitchen</option><option>Sports</option><option>Beauty</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Price (₹)</label>
+          <input class="form-input" id="newPrice" type="number" placeholder="999">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Stock</label>
+          <input class="form-input" id="newStock" type="number" placeholder="50">
+        </div>
+        <div class="form-group" style="grid-column:1/-1">
+          <label class="form-label">Description</label>
+          <input class="form-input" id="newDesc" placeholder="Product description">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Image URL</label>
+          <input class="form-input" id="newImage" placeholder="Image URL">
+        </div>
+      </div>
+      <button class="btn-primary" onclick="addProduct()" style="margin-top:1rem">Add Product</button>
+    </div>
+  </div>
+</div>
+ 
+<!-- PRODUCT MODAL -->
+<div class="modal-overlay" id="productModal" onclick="closeModal(event)">
+  <div class="modal" style="position:relative">
+    <button class="close-btn" onclick="closeModalDirect()">✕</button>
+    <div class="modal-img" id="modalImg"></div>
+    <div class="modal-body">
+      <div class="modal-cat" id="modalCat"></div>
+      <div class="modal-name" id="modalName"></div>
+      <div class="modal-price" id="modalPrice"></div>
+      <div class="modal-desc" id="modalDesc"></div>
+      <div class="modal-meta" id="modalMeta"></div>
+      <div class="modal-actions">
+        <div class="qty-control">
+          <button class="qty-btn" onclick="changeQty(-1)">−</button>
+          <span class="qty-num" id="modalQty">1</span>
+          <button class="qty-btn" onclick="changeQty(1)">+</button>
+        </div>
+        <button class="btn-primary" id="modalAddBtn" onclick="addModalToCart()" style="flex:1">Add to Cart</button>
+      </div>
+    </div>
+  </div>
+</div>
+ 
+<script src="script.js" defer></script>
+
+</body>
+</html>
