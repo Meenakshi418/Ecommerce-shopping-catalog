@@ -145,8 +145,8 @@ bazaarx/
 │
 ├── server.js          # Backend server (Express + MySQL)
 ├── index.html         # Frontend UI
-├── style.css          # Styling (if separated)
-├── script.js          # Frontend logic (if separated)
+├── style.css         
+├── script.js          
 └── README.md
 ```
 
